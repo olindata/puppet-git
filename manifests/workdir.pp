@@ -24,14 +24,14 @@ define git::workdir($repository, $local_container, $local_name = false, $post_ch
         group => $runas_group,
     }
   
-    exec { 'git-clone-$name':
+    exec { "git-clone-${name}":
         command => "git clone --branch ${branch} ${repository} ${local_name_real}",
         cwd     => $local_container,
         require => [ File[$local_container], Package['git-core']],
         creates => "${local_container}/${local_name_real}/.git",
     }
 
-    exec { 'git-pull-$name':
+    exec { "git-pull-${name}":
         command => 'git pull',
         cwd     => "${local_container}/${local_name_real}",
         require => Exec["git-clone-${name}"],
